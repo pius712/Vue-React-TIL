@@ -11,7 +11,7 @@
         {{ message }}
     </div>
     <div id="app-2">
-            <span title="???">
+            <span v-bind:title="???">
               Hover your mouse over me for a few seconds
               to see my dynamically bound title!
             </span>
@@ -119,3 +119,106 @@ var app6 = new Vue({
   }
 })
 ```
+
+## Composing with Components
+
+
+### Vue Instance
+Vue의 인스턴스 생성  // MVVM 패턴에 영향을 받았다고 한다.  
+Vue의 인스턴스 생성시에는 옵션 객체가 들어간다.   
+모든 Vue Components는 vue instance이다. 
+```javascript
+var vm = new Vue({
+  // options
+})
+```
+
+### Data and Methods 
+Vue의 인스턴스가 생성되면 뷰 인스턴스 내 옵션의 데이터 값은 Vue’s reactivity system에 등록이 된다. 그래서 그 데이터 값이 바뀌면  view가 업데이트 되면서 새로 업데이트된 값과 매칭이 된다. 
+```javascript
+// Our data object
+var data = { a: 1 }
+
+// The object is added to a Vue instance
+var vm = new Vue({
+  data: data
+})
+
+// Getting the property on the instance
+// returns the one from the original data
+vm.a == data.a // => true
+
+// Setting the property on the instance
+// also affects the original data
+vm.a = 2
+data.a // => 2
+
+// ... and vice-versa
+data.a = 3
+vm.a // => 3
+```
+
+인스턴스를 생성할 때, 없던 값은 reactive하지 않아서 view가 변하지 않는다. 
+```javascript
+vm.b = 'hi'
+```
+위와 같은 코드를 작성한다고 하여도 b 값의 변화가 view의 업데이트에 아무런 트리거가 되지 않는다.  만약에 필요하다면 선언하고 초기화해야한다.
+```javascript
+data: {
+  newTodoText: '',
+  visitCount: 0,
+  hideCompletedTodos: false,
+  todos: [],
+  error: null
+}
+```
+
+## Template Systax
+
+### Interpolation
+
+* text  
+가장 간단한 방법으로 {{ }} 콧수염 괄호를 통해서 데이터 바인딩을 하는 것이다. data 객체의 값이 바뀌면 업데이터 된다.  
+```html
+<span>Message: {{ msg }}</span
+```
+* raw html  
+* Attribute  
+HTML의 attribute를 위해 `v-bind`가 사용된다. 이렇게 작성시 실제 html에서는 `<p id=pius>` 로 나온다. 
+
+```html
+<body>
+    <div id="app">
+       <p v-bind:id="pius712">hello</p> 
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el : '#app',
+            data : {
+                pius712: 'pius' 
+            }
+        })
+    </script>
+</body>
+```
+boolean 형의 attribute는 위와는 다르게 동작한다. 아예 `<button>` 태그에서 없는 속성으로 처리된다.
+```html
+<body>
+    <div id="app">
+       <button v-bind:disabled="isButtonDisabled">Button</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el : '#app',
+            data : {
+                isButtonDisabled: false,
+            }
+        })
+    </script>
+</body>
+```
+### Directives
+
+### Shorthands  
