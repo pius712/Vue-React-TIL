@@ -1,1 +1,121 @@
 # vue-tutorial
+
+## Vue 공식 홈페이지 기반 tutorial 
+
+
+### declarative rendering
+
+```html
+<body>
+    <div id="app">
+        {{ message }}
+    </div>
+    <div id="app-2">
+            <span title="???">
+              Hover your mouse over me for a few seconds
+              to see my dynamically bound title!
+            </span>
+          </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: 'hello vue'
+            }
+        })
+
+        var app2 = new Vue({
+        el: '#app-2',
+        data: {
+            message: 'You loaded this page on ' + new Date().toLocaleString()
+        }
+        })
+    </script>  
+</body>
+```
+
+위의 Vue 인스턴스와 message 사이에 바인딩이 일어남.
+
+아래의 경우에는 `v-` 라는 디렉티브(directive)를 통해서 속성을 바인딩 해주었다. 렌더링된 DOM에 reactive behavior을 적용시켜준다. 
+
+## Conditionals and Loops
+### Conditionals 
+DOM의 structure을 바인딩 할 수도 있다.  `v-if=" "`
+``` html
+<div id="app-3">
+  <span v-if="seen">Now you see me</span>
+</div>
+```
+```javascript
+var app3 = new Vue({
+  el: '#app-3',
+  data: {
+    seen: true
+  }
+})
+```
+
+### Loops
+배열에 있는 데이터를 사용해서 아이템의 리스트를 보여줄때 사용한다. `v-for=" "` 
+```html
+<div id="app-4">
+  <ol>
+    <li v-for="todo in todos">
+      {{ todo.text }}
+    </li>
+  </ol>
+</div>
+```
+ ```javascript
+ var app4 = new Vue({
+  el: '#app-4',
+  data: {
+    todos: [
+      { text: 'Learn JavaScript' },
+      { text: 'Learn Vue' },
+      { text: 'Build something awesome' }
+    ]
+  }
+})
+```
+
+## Handling User Input
+### listener 
+`v-on:event= " "` 방식으로 v-on 디렉티브를 사용한다. 이벤트 리스너를 달아서 vue 인스턴스의 methods를 invoke한다. 
+```html
+<div id="app-5">
+  <p>{{ message }}</p>
+  <button v-on:click="reverseMessage">Reverse Message</button>
+</div>
+```
+```javascript
+var app5 = new Vue({
+  el: '#app-5',
+  data: {
+    message: 'Hello Vue.js!'
+  },
+  methods: {
+    reverseMessage: function () {
+      this.message = this.message.split('').reverse().join('')
+    }
+  }
+})
+```
+### two-way binding
+`v-model=` two-way binding. input과 app state의 message를 바인딩 해준다. 
+
+```html 
+<div id="app-6">
+  <p>{{ message }}</p>
+  <input v-model="message">
+</div>
+```
+```javascript
+var app6 = new Vue({
+  el: '#app-6',
+  data: {
+    message: 'Hello Vue!'
+  }
+})
+```
