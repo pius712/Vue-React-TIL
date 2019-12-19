@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- <button-counter></button-counter>
+        <button-counter></button-counter>
+        <button-counter></button-counter> -->
+        <!-- <blog-post
+            v-bind:posts="posts"
+        ></blog-post> -->
+        <blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:post="post"
+        ></blog-post>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    // var ButtonCounter = {
+    //     template: `
+    //         <div>
+    //             <p> {{this.counter}} </p>
+    //             <button v-on:click='addCounter'>click</button>
+    //         </div>
+    //             `,
+    //     data(){
+    //         return {
+    //             counter: 0,
+    //         }
+    //     },
+    //     methods:{
+    //         addCounter(){
+    //             this.counter = this.counter+1;
+    //         }
+    //     }
+    // }
+    // new Vue({
+    //     el:"#app",
+    //     components:{
+    //         ButtonCounter
+    //     }
+    // })
+
+    // var data = {count: 0};
+    // var ButtonCounter = {
+    //     data = data,
+    //     methods: {
+    //         ddCounter(){
+    //             this.counter = this.counter+1;
+    //         }
+    //     },
+    //     template: `
+    //         <div>
+    //             <p> {{this.counter}} </p>
+    //             <button v-on:click='addCounter'>click</button>
+    //         </div>
+    //             `,
+   
+    // };
+
+    var blogPost = {
+        props:['post'],
+        template:`
+        <div>
+            <div>{{ post.title }}</div>
+        </div>
+        `
+    };
+    // Vue.component('blog-post',{
+    //     props:['posts'],
+    //     template:`
+    //     <div>
+      
+    //         <div v-for="post in posts">{{ post.title}}</div>
+             
+    //     </div>
+    //     `
+    // })
+    new Vue({
+        el: '#app',
+        data: {
+            posts: [
+                { id: 1, title: 'My journey with Vue' },
+                { id: 2, title: 'Blogging with Vue' },
+                { id: 3, title: 'Why Vue is so fun' }
+            ],
+        },
+        components:{
+            'blog-post': blogPost,
+        }
+    });
+
+    
+</script>
+</html>
