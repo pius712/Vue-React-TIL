@@ -18,7 +18,7 @@
         <blog-post
             v-for="post in posts"
             v-bind:key="post.id"
-            v-bind:post="post"
+            v-bind:data="post"
         ></blog-post>
     </div>
 </body>
@@ -67,10 +67,10 @@
     // };
 
     var blogPost = {
-        props:['post'],
+        props:['data'],
         template:`
         <div>
-            <div>{{ post.title }}</div>
+            <div>{{ data.title }}</div>
         </div>
         `
     };
