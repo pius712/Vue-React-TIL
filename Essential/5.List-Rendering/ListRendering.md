@@ -65,6 +65,8 @@ new Vue({
 })
 ``` 
 
+## Maintaing State
+
 ## Array Change Detection
 
 ### Caveats 
