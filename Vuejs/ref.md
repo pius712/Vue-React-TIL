@@ -49,3 +49,7 @@ export default:{
 //  parent component
 this.$ref.username.focus();
 ```
+
+## 장점
+
+mounted() 같은 라이프 사이클 훅에서 `document.querySelector()`를 사용할 경우, 문서 전체에서 DOM객체를 찾을 수 있다. 하지만 `ref` 속성은 컴포넌트내에서만 `scope` 가지는 장점이 있다.

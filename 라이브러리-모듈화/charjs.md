@@ -47,3 +47,63 @@ export default {
   },
 };
 ```
+
+## 컴포넌트 통신을 이용한 차트 컴포넌트 기능 결합
+
+부모 컴포넌트에서 `methods`나 `life cycle hook` 에서 데이터를 받은 다음에, 하위의 차트 컴포넌트에 props를 통해서 데이터를 넘겨주는 방식으로 차트 컴포넌트를 다른 컴포넌트와 통신을 하여, 기능을 결합할 수 있다.
+
+```html
+//parent component
+<template>
+  <div id="app">
+    <bar-chart :datasets="chartDataSets"></bar-chart>
+  </div>
+</template>
+
+<script>
+  import BarChart from './components/BarChart';
+  import LineChart from './components/LineChart';
+  export default {
+    name: 'app',
+    data() {
+      return {
+        chartDataSets: [],
+      };
+    },
+    components: {
+      BarChart,
+      LineChart,
+    },
+    created() {
+      axios
+        .get('../..')
+        .then(res => {
+          this.chartDataSets = res.data;
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+  };
+</script>
+```
+
+```html
+//bar-chart.vue
+<template>
+  <div>
+      <canvas ref="barChart" id="myChart"></canvas>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['datasets'],
+  mounted() {
+    var ctx = this.$refs.barChart;
+    var myChart = new this.$_Chart(ctx, {
+      data: {
+        datasets: this.datasets,
+      },
+      //...
+```
