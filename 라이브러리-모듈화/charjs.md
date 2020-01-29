@@ -17,3 +17,33 @@ var ctx = document.getElementById('myChart');
       type: 'bar',
       // ...
 ```
+
+## 플러그인화
+
+src/plugins 디렉터리를 만든다.
+
+```js
+// plugins/ChartPlugin.js
+import Chart from 'chart.js';
+
+export default {
+  install(Vue) {
+    Vue.prototype.$_Chart = Chart;
+  },
+};
+```
+
+```js
+//main.js
+import ChartPlugin from './plugins/CharPlugin';
+Vue.use(ChartPlugin);
+```
+
+```js
+//components/BarComponent.vue
+export default {
+  mounted() {
+    var ctx = this.$refs.barChart;
+  },
+};
+```
