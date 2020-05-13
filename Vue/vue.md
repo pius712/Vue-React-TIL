@@ -214,7 +214,7 @@ export default {
  
 public 폴더의 
 
-#### Components
+### Components
 
 최소 두 단어 이상을 조합. 기존의 html의 태그와 혼동되면 안된다. 
 ex) AppHeader 
@@ -238,7 +238,8 @@ new Vue({
 ```
 
 cli 
-```javascript
+```html
+
 <script>
 import TodoHeader from './components/TodoHeader.vue'
 
@@ -253,9 +254,7 @@ export default {
   }
 }
 </script>
-```
 
-```html
 <style scoped>
 
 </style>

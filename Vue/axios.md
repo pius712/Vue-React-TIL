@@ -62,3 +62,29 @@ else if(req.method === 'POST'){
     }
 }
 ```
+
+
+## axios.create()
+
+custom config를 가지고 axios의 instance를 생성할 수 있다.
+```js
+const instance = axios.create({
+  baseURL: 'https://some-domain.com/api/',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
+```
+
+이렇게 만들어진 instance는 아래와 같은 메서드를 사용할 수 있다.
+
+```js
+instance.request(config)
+instance.get(url[, config])
+instance.delete(url[, config])
+instance.head(url[, config])
+instance.options(url[, config])
+instance.post(url[, data[, config]])
+instance.put(url[, data[, config]])
+instance.patch(url[, data[, config]])
+instance.getUri([config])
+```
