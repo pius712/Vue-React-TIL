@@ -88,3 +88,75 @@ instance.put(url[, data[, config]])
 instance.patch(url[, data[, config]])
 instance.getUri([config])
 ```
+
+## intercetor
+
+request 또는 response 요청을 할 때, 이를 중간에 가로챌 수 있다. 
+
+request 인터셉터는 axios롤 request를 보내기 전에 config를 설정해서 보낼 수 있다. 
+
+response는 response의 status code가 200번대이면 response data를 조작할 수 있다. 
+
+아래는 예시 코드이다. 
+
+```js
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+    // Do something before request is sent
+    return config;
+  }, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  });
+
+// Add a response interceptor
+axios.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  }, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  });
+```
+
+axios의 커스텀 인스턴스에도 아래와 같이 interceptor를 추가할 수 있다. 
+
+```js
+const instance = axios.create();
+instance.interceptors.request.use(function () {/*...*/});
+```
+
+아래는 인터셉터 기능을 처리하는 모듈을 만든는 예이다.
+
+```js
+//api/common/interceptors.js
+
+import store from '@/store/index';
+function setInterceptors(instance) {
+	instance.interceptors.request.use(
+		function(config) {
+			config.headers.Authorization = store.state.token;
+			console.log(config);
+			return config;
+		},
+		function(error) {
+			return Promise.reject(error);
+		},
+	);
+	instance.interceptors.response.use(
+		function(response) {
+			return response;
+		},
+		function(error) {
+			return Promise.reject(error);
+		},
+	);
+	return instance;
+}
+
+export default setInterceptors;
+```
+
+함수의 인자로 넘겨받은 axios의 instance에 inteceptors에 대한 설정을 마치고 instance를 return 해준다. 
