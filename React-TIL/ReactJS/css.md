@@ -119,3 +119,42 @@ export default ()=>(
   </Wrapper>
 );
 ```
+
+### Extending Styles
+
+컴포넌트를 사용하고 싶은데, 해당 컴포넌트의 css에 약간의 변화를 주고 싶을 때, 상황에 따라 props를 정의하고 props를 바탕으로 스타일을 바꿔주는 것은 번거로운 일이다. 
+
+해결책
+
+기존의 스타일을 상속받는 새로운 컴포넌트를 만들기 위해서, `styled()` 생성자로 감싸주기만 하면 된다.  
+아래의 예는 기존의 button 컴포넌트를 상속받아 확장하는 예이다. 
+
+```js
+const Button = styled.button`
+  color: palevioletred;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid palevioletred;
+  border-radius: 3px;
+`;
+
+// A new component based on Button, but with some override styles
+const TomatoButton = styled(Button)`
+  color: tomato;
+  border-color: tomato;
+`;
+
+class App extends Component{
+  render() {
+    return (
+      <div>
+        <Button>Normal Button</Button>
+        <TomatoButton>Tomato Button</TomatoButton>
+      </div>
+    )
+    }
+  );
+}
+```
+## styled-reset

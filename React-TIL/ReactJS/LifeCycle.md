@@ -1,8 +1,14 @@
 # Life Cycle
 
-## componentDidMount() 
+## 컴포넌트 생성
+
+### constructor() 
+
+컴포넌트의 생성자 함수로, 컴포넌트가 생성될 때 호출되는 함수이다. 
+
+### componentDidMount() 
 
 메서드는 컴포넌트 출력물이 DOM에 렌더링 된 후에 실행. 
 
+여기선 주로 D3, masonry 처럼 DOM 을 사용해야하는 외부 라이브러리 연동을 하거나, 해당 컴포넌트에서 필요로하는 데이터를 요청하기 위해 axios, fetch 등을 통하여 ajax 요청을 하거나, DOM 의 속성을 읽거나 직접 변경하는 작업을 진행합니다.
 
-## componentWillUnmount()
