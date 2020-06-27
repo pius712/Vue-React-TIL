@@ -1,21 +1,28 @@
-# Navigate between pages
+# Pages
 
 ## Pages
 
-nextjs에서 pages는 file 이름을 기반으로 하는 라우트이다.  
+Next.js에서 페이지는  `pages` 디렉터리에 있는 리액트 컴포넌트이다. 
+In Next.js, a page is a React Component exported from a file in the pages directory.
+
+Nextjs에서 pages는  file 이름을 기반으로 하는 라우트와 관련이 되어있다.  
 
 - `pages/index.js`  => `/` route.
 - `pages/posts/first-post.js` => `/posts/first-post` route.
 
+
+## Create a New Page
+
 ```js
+// pages/posts/first-post.
 export default function FirstPost() {
   return <h1>First Post</h1>
 }
 ```
 
-함수의 이름은 아무거나 해도 상관없지만, export `default`로 넘겨줘야 한다.
+함수의 이름은 아무거나 해도 상관없지만, export `default`로 넘겨줘야 한다. `/posts/first-post.`
 
-## Link
+## Link Component
 
 페이지 간에 링크를 걸때, html에서는 일반적으로 `<a>` tag를 사용한다. 
 
@@ -34,7 +41,8 @@ Learn <a href="https://nextjs.org">Next.js!</a>
 // 아래는 react component Link를 사용한 것.
 Read <Link href="/posts/first-post"><a>this page!</a></Link>
 ```
-Next, replace the content of pages/posts/first-post.js with the following:
+
+`pages/posts/first-post.js` 에 적용.
 
 ```js
 // pages/posts/first-post.js
@@ -54,6 +62,9 @@ export default function FirstPost() {
   )
 }
 ```
+
+Link component는 `<a>` tags와 비슷하다. 하지만, `<a href="…">` 방식 대신에,  `<Link href="…">`를 쓰고 안에  `<a>` 태그를 쓰면 된다.
+
 
 ## code splitting
 
