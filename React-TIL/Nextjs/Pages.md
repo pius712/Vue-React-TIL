@@ -81,3 +81,6 @@ Next.js는 자동으로 code splitting해서 최적화를 한다.
 라우트를 pages 디렉터리 내의 파일로 만들고, 빌트인 Link component를 사용하면 된다. 다른 routing 라이브러리는 필요 없다. 
 
 You can learn more about the Link component in the API reference documentation and routing in general in the routing documentation.
+
+## Static Generation (Recommended)
+ The HTML is generated at build time and will be reused on each request. To make a page use Static Generation, either export the page component, or export getStaticProps (and getStaticPaths if necessary). It's great for pages that can be pre-rendered ahead of a user's request. You can also use it with Client-side Rendering to bring in additional data.
