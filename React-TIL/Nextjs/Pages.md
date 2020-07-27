@@ -46,6 +46,15 @@ HTML이 build time에 생성되고, 매 request에서 재사용 될 수 있다. 
 HTML이 매 request마다 생성된다. 페이지에서 Server-side Rendering을 사용하기 위해서는 export getServerSideProps를 해줘야한다.  
 Server-side Rendering은 비교적 느리기 때문에, 필요로 할 때 사용해야한다. 
 
+### 개인적인 의견
+
+Static Generation이 Next에서 권장하는 방식이다. 하지만 이러한 경우 결국 HTML이 만들어져서 나오기 때문에, interaction이 빈번한 웹의 경우에는 사용하기가 어렵다. 
+정확히 말하자면, Static Generation이 사용하기 어렵다기보다, getStaticProps 함수를 사용하는 것이 어렵다.  
+
+Static Generation + client side rendering
+Or Server-side Rendering을 쓰는 방식이 더 좋지 않을까..? 퍼포먼스 측면에서는 떨어지더라도.
+
+
 ## Pre-rendering
 
 기본적으로, Next.js는 모든 페이지를 pre-render해준다. 즉, Next.js는 각각의 페이지들을 미리 HTML을 만들어주는 것이다. 
@@ -67,7 +76,7 @@ Next.js에서는 각 페이지마다 사용할 수 있는 `pre-rendering` 형태
 물론, 때때로 `Server-side Rendering`이 꼭 필요한 경우도 있다. 
 
 그리고 Client-side Rendering을 `Static Generation`과 `Server-side Render`와 함께 사용할 수 있다.  
-page의 몇 부분은 client side js에 의해 렌더링 될 수 있다. (Data Fetching 문서에서 자세하게 다룬다.
+page의 몇 부분은 client side js에 의해 렌더링 될 수 있다. (Data Fetching 문서에서 자세하게 다룬다.)
 
 ## Static Generation
 

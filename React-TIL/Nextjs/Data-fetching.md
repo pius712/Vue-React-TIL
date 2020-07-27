@@ -34,7 +34,6 @@ export async function getStaticProps(context) {
 - `params` dynamic routes에서 페이지의 route 파라미터를 가지고 있다. 예를들어, page의 이름이 [id].js 인 경우에, params는 `{ id: ...}` 와 같은 모양이다.  To learn more, take a look at the Dynamic Routing documentation. You should use this together with getStaticPaths, which we’ll explain later.
 - `preview` 만약 페이지가 preview mode에 있으면 true를 반환하고, 그렇지 않다면 false를 반환한다. See the Preview Mode documentation.
 - `previewData` contains the preview data set by setPreviewData. See the Preview Mode documentation.
-
 ---
 **Note**: You can import modules in top-level scope for use in getStaticProps. Imports used in getStaticProps will not be bundled for the client-side, as explained below.
 

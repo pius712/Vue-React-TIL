@@ -42,3 +42,53 @@ export default function MyApp({ Component, pageProps }) {
 In development, expressing stylesheets this way allows your styles to be hot reloaded as you edit them—meaning you can keep application state.
 
 In production, all CSS files will be automatically concatenated into a single minified .css file.
+
+## CSS SSR(styled component)
+
+바벨 플러그인 설치
+`npm install --save-dev babel-plugin-styled-components`
+
+```json
+// .babelrc
+{
+  "presets":["next/babel"],
+  "plugins":[["babel-plugin-styled-components",{
+    "ssr":true,
+    "displayName": true
+    }]]
+}
+```
+
+```js
+// pages/_document.js
+import Document from 'next/document'
+import { ServerStyleSheet } from 'styled-components'
+
+export default class MyDocument extends Document {
+  static async getInitialProps(ctx) {
+    const sheet = new ServerStyleSheet()
+    const originalRenderPage = ctx.renderPage
+
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
+        })
+
+      const initialProps = await Document.getInitialProps(ctx)
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        ),
+      }
+    } finally {
+      sheet.seal()
+    }
+  }
+}
+```

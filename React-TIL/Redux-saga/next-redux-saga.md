@@ -60,7 +60,6 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import App, {Container} from 'next/app'
 import withRedux from 'next-redux-wrapper'
-import withReduxSaga from 'next-redux-saga'
 import configureStore from './configure-store'
 
 class ExampleApp extends App {
@@ -86,5 +85,5 @@ class ExampleApp extends App {
   }
 }
 
-export default withRedux(configureStore)(withReduxSaga(ExampleApp))
+export default withRedux(configureStore)(ExampleApp)
 ```
