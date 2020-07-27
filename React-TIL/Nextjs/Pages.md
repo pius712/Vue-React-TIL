@@ -1,5 +1,15 @@
 # Pages
 
+- Pages
+- Create a New Page
+- 선요약
+- Pre-rendering
+  - Two forms of Pre-rendering
+- Static Generation 
+  - getStaticProps
+  - getStaticPaths
+- When should I use Static Generation?
+- Server-side Rendering
 ## Pages
 
 Next.js에서 페이지는  `pages` 디렉터리에 있는 리액트 컴포넌트이다. 
@@ -21,50 +31,221 @@ export default function FirstPost() {
 ```
 
 함수의 이름은 아무거나 해도 상관없지만, export `default`로 넘겨줘야 한다. `/posts/first-post.`
+## Summary
 
-## Link Component
+Next.js에서 사용되는 두가지 형태의 pre-rendering에 대해 알아본다. 
 
-페이지 간에 링크를 걸때, html에서는 일반적으로 `<a>` tag를 사용한다. 
+### `Static Generation (Recommended)`
 
-Next.js에서는 `<Link>` 라고 하는 React Component를 사용하게 된다(`<a>` 태그를 감싸고 있는 컴포넌트).  
-이 `<Link>` client-side navigation이 가능하도록 한다. 
+HTML이 build time에 생성되고, 매 request에서 재사용 될 수 있다. Static Generation을 페이지에서 사용하기 위해서는 page component를 export 하고, getStaticProps(필요시 getStaticPaths)를 export 해야한다.  
+유저의 request 이전에 페이지를 pre-render하는 것이 좋은 경우에 사용한다.  
+또한 추가적인 데이터를 가져오기 위해서 Client-side Rendering을 사용할 수도 있다.
 
-<Link>를 사용하기 위해서는, Link Component를 import 해야한다. 
+### `Server-side Rendering`
+
+HTML이 매 request마다 생성된다. 페이지에서 Server-side Rendering을 사용하기 위해서는 export getServerSideProps를 해줘야한다.  
+Server-side Rendering은 비교적 느리기 때문에, 필요로 할 때 사용해야한다. 
+
+## Pre-rendering
+
+기본적으로, Next.js는 모든 페이지를 pre-render해준다. 즉, Next.js는 각각의 페이지들을 미리 HTML을 만들어주는 것이다. 
+Client-side에서 모든 js 코드를 해석해서 만들어 주는 것이 아니기 때문에, 보다 나은 퍼포먼스를 기대할 수 있다는 장점이 있다.
+
+생성된 HTML은 해당 페이지에 필요로하는 최소한의 js code를 가진다. 브라우저에 의해 page가 로딩될 때, 그 js 코드가 실행되고 해당 페이지가 완전히 interactive 하게 만들어준다. (이러한 과정을 hydration이라고 부른다.) 
+active. (This process is called hydration.)
+
+### Two forms of Pre-rendering
+
+Next.js는 두가지 형태의 pre-rendering이 있다. `Static Generation`과 `Server-side Rendering` 이 둘의 차이는 HTML이 언제 생성되는지에 있다. 
+
+- `Static Generation` (권장): HTML이 build time에 생성되고, 각각의 request에 따라 언제든 재사용이 가능하다. 
+- `Server-side Rendering`: HTML이 각각의 request에 따라 생성된다. 
+
+Next.js에서는 각 페이지마다 사용할 수 있는 `pre-rendering` 형태를 골라서 사용할 수 있도록 해준다. 즉, 대부분의 페이지에서는 `Static Generation`를 사용하고, 나머지 페이지에서는 `Server-side Rendering`을 사용하는 혼합된 형태로 사용이 가능하다. 
+
+`Static Generation`이 권장되는 이유는 퍼포먼스때문이다. 정적으로 생성된 페이지들은 캐싱될 수 있기 때문이다.  
+물론, 때때로 `Server-side Rendering`이 꼭 필요한 경우도 있다. 
+
+그리고 Client-side Rendering을 `Static Generation`과 `Server-side Render`와 함께 사용할 수 있다.  
+page의 몇 부분은 client side js에 의해 렌더링 될 수 있다. (Data Fetching 문서에서 자세하게 다룬다.
+
+## Static Generation
+
+### Static Generation without data
+기본적으로 Next.js는 페이지를 data fetching 없이 `Static Generation`을 사용해서 pre-redner한다.
 
 ```js
-import Link from 'next/link'
+function About() {
+  return <div>About</div>
+}
+
+export default About
 ```
+이 페이지는 외부의 어떠한 data도 fetch하지 않는다. 이러한 예와 같이, Next.js는 단일 HTML 파일을 페이지마다 빌드 타임에 생성한다. 
+
+### Static Generation with data
+
+몇몇의 페이지는 외부의 데이터를 fetching해서 pre-rendering을 해야할 수도 있다.  
+여기에는 두가지 시나리오가 있는데, 하나 혹은 둘 모두 적용하여 사용할 수 있다.  
+각각의 케이스에 Next.js가 제공하는 special function을 사용할 수 있다. 
+
+- `getStaticProps`: 페이지의 컨텐츠가 외부의 data에 의존적일 때 사용  
+- `getStaticPaths`: 페이지의 paths가 외부의 데이터에 의존적일 때 사용. (일반적으로는 getStaticProps에 추가적으로 사용)
+
+#### Scenario 1: Your page content depends on external data
+
+예시: 블로그 페이지가 CMS(content managemenet system)으로부터 게시글 리스트를 fetch 해야할 때.  
 
 ```js
-Learn <a href="https://nextjs.org">Next.js!</a>
-// 위는 html의 a tag이다. 
-// 아래는 react component Link를 사용한 것.
-Read <Link href="/posts/first-post"><a>this page!</a></Link>
-```
-
-`pages/posts/first-post.js` 에 적용.
-
-```js
-// pages/posts/first-post.js
-
-import Link from 'next/link'
-
-export default function FirstPost() {
+// TODO: Need to fetch `posts` (by calling some API endpoint)
+//       before this page can be pre-rendered.
+function Blog({ posts }) {
   return (
-    <>
-      <h1>First Post</h1>
-      <h2>
-        <Link href="/">
-          <a>Back to home</a>
-        </Link>
-      </h2>
-    </>
+    <ul>
+      {posts.map((post) => (
+        <li>{post.title}</li>
+      ))}
+    </ul>
   )
 }
+
+export default Blog
 ```
 
-Link component는 `<a>` tags와 비슷하다. 하지만, `<a href="…">` 방식 대신에,  `<Link href="…">`를 쓰고 안에  `<a>` 태그를 쓰면 된다.
+이 데이터를 pre-render시에 fetch 하기 위해서는, Next.js는 `getStaticProps`라고 불리는 비동기 함수를 같은 파일에서 exprot 할 수 있도록 해준다. 이 함수는 build time에 호출되어, pre-render 시에 page의 props로 넘겨준다. 
 
+```js
+function Blog({ posts }) {
+  // Render posts...
+}
+
+// This function gets called at build time
+export async function getStaticProps() {
+  // Call an external API endpoint to get posts
+  const res = await fetch('https://.../posts')
+  const posts = await res.json()
+
+  // By returning { props: posts }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      posts,
+    },
+  }
+}
+
+export default Blog
+```
+
+To learn more about how getStaticProps works, check out the Data Fetching documentation.
+
+#### Scenario 2: Your page paths depend on external data
+
+Next.js는 dynamic routes에 따른 page들을 만들 수 있도록 해준다.  
+예를 들어서, `pages/posts/[id].js` 와 같은 포스트의 id에 따른 단일 블로그 포스트를 페이지를 만들 수 있다.  
+
+To learn more about dynamic routing, check the Dynamic Routing documentation.
+
+하지만, 빌드 타임에 pre-render하고 싶은 id는 외부에 의존적일 수도 있다. 
+
+예시: post의 id가 1인 blog post 하나만을 데이터 베이스에 저장했다고 가정할 때, posts/1 페이지만을 빌드 타임에 pre-render 하고 싶을 수도 있다. 
+
+이후에, 2번째 post를 저장하고, 이를 pre-render하는 것도 마찬가지. 
+
+따라서, pre-render 되어야할 페이지의 paths가 외부에 의존적인 상황이다. 이를 다루기 위해서는 `getStaticPathsTo` 비동기 함수를 dynamic page에서 호출 할 수 있다. 이 예에서는 pages/posts/[id].js. 이 함수는 build time에 호출 되고, 어떤 paths가 pre-render될지를 명시할 수 있다. 
+
+```js
+// This function gets called at build time
+export async function getStaticPaths() {
+  // Call an external API endpoint to get posts
+  const res = await fetch('https://.../posts')
+  const posts = await res.json()
+
+  // Get the paths we want to pre-render based on posts
+  const paths = posts.map((post) => `/posts/${post.id}`)
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
+  return { paths, fallback: false }
+}
+```
+또한, pages/posts/[id].js 에서는 post에 대한 data를 fetch하기 위해서 `getStaticProps`를 export 할 수도 있다. 
+
+```js
+function Post({ post }) {
+  // Render post...
+}
+
+export async function getStaticPaths() {
+  // ...
+}
+
+// This also gets called at build time
+export async function getStaticProps({ params }) {
+  // params contains the post `id`.
+  // If the route is like /posts/1, then params.id is 1
+  const res = await fetch(`https://.../posts/${params.id}`)
+  const post = await res.json()
+
+  // Pass post data to the page via props
+  return { props: { post } }
+}
+
+export default Post
+```
+
+To learn more about how getStaticPaths works, check out the Data Fetching documentation.
+
+
+## When should I use Static Generation?
+
+가능하다면 `Static Generation`이 권장된다. 왜냐하면, 페이지가 한번 빌드되고, CDN에 의해서 제공되기 때문에 매 request마다 페이지를 server-rendering 하는 것보다 퍼포먼스가 좋기 때문이다. 
+
+`Static Generation`는 다양한 타입의 페이지에서 사용될 수 있다.
+
+- Marketing pages
+- Blog posts
+- E-commerce product listings
+- Help and documentation
+
+user의 reuqest 이전에 page가 렌더링 되어야 한다? 그렇다면 Static Generation을 사용하면 된다. 
+
+반면에, user의 request가 있기 전에 페이지를 렌더링할 필요가 없다면, 사용하지 않는 것이 좋다. 
+만약에, 페이지가 자주 업데이트 되는 page를 보여줘야 한다면, 매 request마다 page의 컨텐트가 바뀐다면..
+이런 경우에는 아래와 같은 방법을 사용할 수 있다. 
+
+- Use Static Generation with Client-side Rendering: 페이지의 일부분은 pre-rendering하지 않고, Client-side js를 사용한다. 이 부분은 Data fetching 문서에서 다룬다. 
+- Use Server-Side Rendering: Next.js는 매 request에 따라 pre-render를 진행한다. 이는 CDN에 의해 캐싱되지 않기 때문에, 비교적 느리다. 하지만, pre-render되는 페이지가 항상 최신의 상태를 유지해야한다면, 이와 같은 방식을 사용해야한다. 
+
+### Server-side Rendering
+
+ "SSR" or "Dynamic Rendering".
+
+만약 페이지가 Server-side Rendering을 사용한다면, page HTML은 매 request마다 생성된다. 
+Server-side Rendering을 사용하기 위해서는, `getServerSideProps` 비동기 함수를 export 해야한다. 이 함수는 매 request마다 서버에서 호출 된다. 
+
+예를 들어, 외부의 API를 사용하여 data를 불러와서 update 해야한다면, 데이터를 fetch하고 이 데이터를 넘겨주는 `getServerSideProps`를 사용할 수 있다. 
+
+```js
+function Page({ data }) {
+  // Render data...
+}
+
+// This gets called on every request
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await fetch(`https://.../data`)
+  const data = await res.json()
+
+  // Pass data to the page via props
+  return { props: { data } }
+}
+
+export default Page
+```
+위에서 보다 시피, `getServerSideProps`는 `getStaticProps`와 비슷하다. 하지만 `getServerSideProps`는 빌드 타임에 호출되는 것이 아니라, 매 request마다 실행된다는 것이다. 
+
+To learn more about how getServerSideProps works, check out our Data Fetching documentation
 
 ## code splitting
 

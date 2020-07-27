@@ -1,5 +1,7 @@
 # Next-redux-saga
 
+이거 필요없음. 
+
 ## install
 
 `npm i next-redux-saga`

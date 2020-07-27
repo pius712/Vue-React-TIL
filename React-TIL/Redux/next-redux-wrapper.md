@@ -1,4 +1,4 @@
-# redux-wrapper
+# next-redux-wrapper
 
 ## install
 
