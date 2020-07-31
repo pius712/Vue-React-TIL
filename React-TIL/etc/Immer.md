@@ -36,3 +36,34 @@ const nextState = produce(baseState, draftState => {
 
 Immer는 baseState는 건들지 않고, nextState는 새로운 immutable tree가 되는데, drfatState에 가해진 변경 사항들을 반영하고 있다.
 
+## IE11 지원
+
+immer 라이브러리는 ES5를 지원하지 않기 때문에, IE11을 지원하지 않는다. 따라서 이에 따른 설정을 해줘야한다.
+
+### 기본 react
+
+```js
+// index.js (entryPoint) 
+import { enableES5 } from 'immer';
+enableES5()
+// 생략...
+```
+
+### Nextjs
+
+아래와 같이 만들어주고, 
+```js
+// utils/produce.js
+import { enableES5, produce } from 'immer';
+
+export default (...args) =>{
+  enableES5();
+  return produce(...args);
+}
+```
+
+```js
+// reducer/...
+import produce from '../utils/produce';
+// ... 생략
+```
