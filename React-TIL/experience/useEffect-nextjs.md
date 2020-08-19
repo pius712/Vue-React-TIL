@@ -21,3 +21,19 @@ if(!me) {
 }
 ```
 이런 식으로 막아줘야한다.
+
+사실 Nextjs를 쓰면서 Props로 전달하지 않으면, 완전한 server side rendering이라고 보기 어렵다. 왜냐하면 결국, client-side에서 store를 기반으로 다시 그려줘야하기 때문.
+
+
+## 시리즈 2
+
+URL로 들어가는 것과, Link 를 통해 들어가는 동작이 다르다.
+
+URL로 `/pius712` 를 들어갈 경우, useEffect가 실행이 안되는데,  
+Link로 들어가는 경우에는 useEffect가 실행이 된다.
+
+
+Linking between pages
+The Next.js router allows you to do client-side route transitions between pages, similarly to a single-page application.
+
+A React component called Link is provided to do this client-side route transition.
